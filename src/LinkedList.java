@@ -1,4 +1,6 @@
-public class AddressList<String> {
+import java.util.Iterator;
+
+public class LinkedList<String> {
 
     public class Node {
 
@@ -44,12 +46,14 @@ public class AddressList<String> {
     public void display() {
         Node current = head;
         if (head == null) {
-            System.out.println("List is empty");
+            System.out.println("Список пустий");
         } else {
             //друк кожного елемента, збільшуючи вказівник
+            System.out.println("Список адрес магазинів");
             while (current != null) {
                 System.out.print(current.data + " ");
                 current = current.next;
+                System.out.println("");
             }
         }
     }
@@ -86,4 +90,32 @@ public class AddressList<String> {
         }
         return true;
     }
+
+//    public LiIterator iterator() {
+//    }
+
+    public int size() {
+        //к-ть елементів
+        int listSize = 0;
+        Iterator<String> iterator = new Iterator<>() {
+
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public String next() {
+                return null;
+            }
+        };
+        //значення змінної listSize збільшується поки існує наступний елемент
+        while (iterator.hasNext()) {
+            iterator.next();
+            listSize++;
+        }
+        return listSize;
+    }
+
+
 }

@@ -8,11 +8,11 @@ public class Stack {
         top = -1;
     }
 
-    public void input(int into){
-        stack[top++] = into;
+    public void push(int i){
+        stack[top++] = i;
     }
 
-    public int output(){
+    public int pop(){
         return stack[top--];
     }
 
