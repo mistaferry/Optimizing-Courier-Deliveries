@@ -7,11 +7,10 @@ public class Main {
         Tree tree = new Tree();
         Graph graph = new Graph();
         tree.add("client1", "street1");
-        tree.add("client2", "street6");
 
         LinkedList<String> storeAddress = new LinkedList<>();
         storeAddress.addFirst("street2");
-        storeAddress.addFirst("street7");//6
+        storeAddress.addFirst("street6");
 
         graph.addVert("street1");//0
         graph.addVert("street2");//1
@@ -43,13 +42,13 @@ public class Main {
             System.out.println("Пошук успішний!");
             found.printNode();
             String clientAddress = found.getAddress();
-            System.out.println("");
+            System.out.println();
 
             System.out.println("Використовуємо BFS");
             System.out.println("Шлях від клієнта до найближчого магазину");
             int path = graph.BFS(clientAddress, storeAddress);
             if(path != -1){
-                System.out.println("");
+                System.out.println();
                 System.out.println("Магазин успішно знайдено!");
                 System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(path));
             }else{
