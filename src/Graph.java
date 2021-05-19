@@ -30,7 +30,7 @@ public class Graph {
     Distance[] shortDist; //масив коротких шляхів
     int currVert; //тек вершина
     int length; //відстань від поч до кінц вершини
-    Stack stack;
+    Stack theStack;
     Queue theQueue;
 //    public char sortedArray[];
 
@@ -43,7 +43,7 @@ public class Graph {
                 matrix[i][j] = 0;
             }
         }
-        stack = new Stack();
+        theStack = new Stack();
         shortDist = new Distance[amount];
         theQueue = new Queue();
     }
@@ -131,5 +131,32 @@ public class Graph {
         return -1;
     }
 
+    int DFS(String start_node, LinkedList<String> lst) {
+
+        int indexStart = getIndexByMark(start_node);
+
+        vertexList[indexStart].wasVisited = true; //клієнт = true
+        displayVertex(indexStart); //вивід вершини
+        theStack.push(indexStart); //вставка в стек
+
+        while(! theStack.isEmpty() ) { // пока черга не пуста
+            int v = getAdjUnvisitedVertex(theStack.peek()); //отримуємо зміжну вершину
+
+            if(v == -1){
+                theStack.pop();
+            }else{
+                vertexList[v].wasVisited = true;
+                displayVertex(v);
+                theStack.push(v);
+                if(lst.compare(getMark(v),lst) != -1){
+                    return lst.compare(getMark(v),lst);
+                }
+            }
+        }
+        for (int i = 0; i < nVertex; i++) {
+            vertexList[i].wasVisited = false;
+        }
+        return -6;
+    }
 
 }

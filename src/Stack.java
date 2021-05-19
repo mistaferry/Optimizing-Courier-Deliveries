@@ -9,18 +9,18 @@ public class Stack {
     }
 
     public void push(int i){
-        stack[top++] = i;
+        stack[++top] = i;
     }
 
     public int pop(){
         return stack[top--];
     }
 
-    public int top(){
+    public int peek(){
         return stack[top];
     }
 
     public boolean isEmpty(){
-        return top==-1;
+        return (top == -1);
     }
 }

@@ -2,6 +2,27 @@ import java.util.Iterator;
 
 public class LinkedList<String> {
 
+    public class LiIterator implements Iterator {
+
+        private Node current;
+
+        public LiIterator(Node first) {
+            current = first;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Node next() {
+            Node tempo = current;
+            current = current.getNext();
+            return tempo;
+        }
+    }
+    
     public class Node {
 
         String data;
@@ -89,28 +110,6 @@ public class LinkedList<String> {
             current = current.next;
         }
         return true;
-    }
-
-
-    public class LiIterator implements Iterator {
-
-        private Node current;
-
-        public LiIterator(Node first) {
-            current = first;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return current != null;
-        }
-
-        @Override
-        public Node next() {
-            Node tempo = current;
-            current = current.getNext();
-            return tempo;
-        }
     }
 
     public LiIterator iterator() {

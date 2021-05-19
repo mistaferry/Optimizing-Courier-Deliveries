@@ -12,6 +12,7 @@ public class Main {
         storeAddress.addFirst("street2");
         storeAddress.addFirst("street6");
 
+
         graph.addVert("street1");//0
         graph.addVert("street2");//1
         graph.addVert("street3");//2
@@ -44,18 +45,34 @@ public class Main {
             String clientAddress = found.getAddress();
             System.out.println();
 
-            System.out.println("Використовуємо BFS");
-            System.out.println("Шлях від клієнта до найближчого магазину");
-            int path = graph.BFS(clientAddress, storeAddress);
-            if(path != -1){
-                System.out.println();
-                System.out.println("Магазин успішно знайдено!");
-                System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(path));
-            }else{
-                System.out.println("Магазин не знайдено!");
+            System.out.println("Виберіть спосіб пошуку шляху від клієнта до найближчого магазину :");
+            System.out.println("1. BFS");
+            System.out.println("2. DFS");
+            int choice = scanner.nextInt();
+            switch(choice){
+                case 1:
+                    System.out.println("Використовуємо BFS");
+                    System.out.println("Шлях від клієнта до найближчого магазину");
+                    int pathBfs = graph.BFS(clientAddress, storeAddress);
+                    System.out.println();
+                    System.out.println("Магазин успішно знайдено!");
+                    System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathBfs));
+                    break;
+                case 2:
+                    System.out.println("Використовуємо DFS");
+                    System.out.println("Шлях від клієнта до найближчого магазину");
+                    int pathDfs = graph.DFS(clientAddress, storeAddress);
+                    System.out.println();
+                    System.out.println("Магазин успішно знайдено!");
+                    System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathDfs));
+                    break;
+                default:
+                    break;
             }
+
         } else {
             System.out.println("Такого клієнта не знайдено.");
         }
     }
 }
+
