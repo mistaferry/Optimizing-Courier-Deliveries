@@ -91,24 +91,36 @@ public class LinkedList<String> {
         return true;
     }
 
-//    public LiIterator iterator() {
-//    }
+
+    public class LiIterator implements Iterator {
+
+        private Node current;
+
+        public LiIterator(Node first) {
+            current = first;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Node next() {
+            Node tempo = current;
+            current = current.getNext();
+            return tempo;
+        }
+    }
+
+    public LiIterator iterator() {
+        return new LiIterator(head);
+    }
 
     public int size() {
         //к-ть елементів
         int listSize = 0;
-        Iterator<String> iterator = new Iterator<>() {
-
-            @Override
-            public boolean hasNext() {
-                return false;
-            }
-
-            @Override
-            public String next() {
-                return null;
-            }
-        };
+        LiIterator iterator = iterator();
         //значення змінної listSize збільшується поки існує наступний елемент
         while (iterator.hasNext()) {
             iterator.next();
@@ -117,5 +129,18 @@ public class LinkedList<String> {
         return listSize;
     }
 
+    public void removeFirst() {
+        //перший елемент видаляємо і першим встає вже другий
+        head = head.next;
+    }
+
+    int compare(String address, LinkedList<String> lst){
+        for (int i = 0; i < size(); i++) {
+            if(lst.findByIndex(i).equals(address)){
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }

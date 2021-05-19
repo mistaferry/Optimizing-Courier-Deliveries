@@ -1,11 +1,3 @@
-//import java.util.Iterator;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Collection;
-
-
-import java.util.Iterator;
 
 public class Graph {
     public static class Vertex {
@@ -28,17 +20,6 @@ public class Graph {
         }
     }
 
-//    public static class Edge{
-//        public int firstVert;
-//        public int endVert;
-//        public int distance;
-//
-//        public Edge(int fVert, int eVert, int dist){
-//            firstVert = fVert;
-//            endVert = eVert;
-//            distance= dist;
-//        }
-//    }
 
     final int amount = 10;
     final int infinity = 10000000;
@@ -50,12 +31,12 @@ public class Graph {
     int currVert; //тек вершина
     int length; //відстань від поч до кінц вершини
     Stack stack;
+    Queue theQueue;
 //    public char sortedArray[];
 
     public Graph() {
         vertexList = new Vertex[amount];
         matrix = new int[amount][amount];
-        nVertex = 0;
         nVertex = 0;
         for (int i = 0; i < amount; i++) {
             for (int j = 0; j < amount; j++) {
@@ -64,46 +45,21 @@ public class Graph {
         }
         stack = new Stack();
         shortDist = new Distance[amount];
+        theQueue = new Queue();
     }
 
     public void addVert(String marker) {
-        nVertex++;
-        vertexList[nVertex] = new Vertex(marker);
+        vertexList[nVertex++] = new Vertex(marker);
+        ;
     }
 
     public void addEdge(int start, int finish) {
         matrix[start][finish] = 1;
     }
 
-//    public int findAddress(String marker) {
-//        int index = 0;
-//        while (marker.compareTo(vertexList[index].mark) != 0 && index<amount) {
-//            index++;
-//        }
-//        if(marker.compareTo(vertexList[index].mark) == 0){
-//            return index;
-//        }
-//        for (int i = 0; i < amount; i++) {
-//            if(marker.compareTo(vertexList[i].mark) == 0){
-//                return i;
-//            }
-//        }
-//        return -1;
-//    }
 
-//    public void dfs(int start, int end){
-//        //вершина зназвою вулиці клієнта, позначається, як відвідувана
-//        vertexList[start].wasVisited = true;
-//        //виводимо цю вершину
-//        vertexPrint(start);
-//        //заносимо її в стек
-//        stack.push(start);
-//
-//        while(!vertexList[end])
-//    }
-
-    public void vertexPrint(int i) {
-        System.out.print(vertexList[i].mark);
+    public void displayVertex(int i) {
+        System.out.print(""+vertexList[i].mark+"\t");
     }
 
     public int findInGraph(String address) {
@@ -121,66 +77,58 @@ public class Graph {
         return -1;
     }
 
+    String getMark(int index){
+        return vertexList[index].mark;
+    }
 
-
-//    void bfs(int start, int end, String startAdd, String endAd, LinkedList<String> path) {
-////        if(start == end){
-////            System.out.println(path);
-////            return;
-////        }
-//        LinkedList<String> list;
-//
-//        //позначаємо всі вершини, невідвідуваними
-//        boolean[] isVisited = new boolean[nVertex];
-//
-//        //створюємо чергу для bfs
-//        LinkedList<String> queueList = new LinkedList<>();
-//
-//        //позначаємо початкову вершину, як відвідувану
-//        isVisited[start] = true;
-//        queueList.addFirst(startAdd);
-//
-//        Iterator<String> i;
-//        while(queueList.size() != 0){
-//            startAdd = queueList.poll();
-//            int n;
-//            i =
-//        }
-//
-//            for (int j = 0; j < amount; j++) {
-//                if(matrix[start][j] != 0){
-//                    int adj = j;
-//                    if(!vertexList[adj].wasVisited){
-//                        int
-//                    }
-//
-//                }
-//            }
-//
-//
-//        }
-
-    void BFS(String start_node, LinkedList<String> list) {
-        for(int i=0; i<nVertex; i++) {
-            vertexList[i].wasVisited = false;
-        } // изначально список посещённых узлов пуст
-        Queue<String> queue = new LinkedList<>();
-
-        queue.offer(start_node);              // начиная с узла-источника
-        vertexList[start_node].wasVisited = true;
-        while(! queue.empty() ) {            // пока очередь не пуста
-            node = queue.pop();                 // извлечь первый элемент в очереди
-            if(node == goal_node) {
-                return true;                       // проверить, не является ли текущий узел целевым
+    int getIndexByMark(String start_node){
+        int i = 0;
+        while(i < nVertex){
+            if(getMark(i).equals(start_node)){
+                return i;
             }
-            foreach(child in expand(node)) {    // все преемники текущего узла, ...
-                if(visited[child] == false) {      // ... которые ещё не были посещены ...
-                    queue.push(child);                // ... добавить в конец очереди...
-                    visited[child] = true;            // ... и пометить как посещённые
+            i++;
+        }
+        return -1;
+    }
+
+
+    int getAdjUnvisitedVertex(int vertex){
+        for (int i = 0; i < nVertex; i++) {
+            if((matrix[vertex][i] == 1) && (!vertexList[i].wasVisited)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    int BFS(String start_node, LinkedList<String> lst) {
+
+        int indexStart = getIndexByMark(start_node);
+
+        vertexList[indexStart].wasVisited = true; //клієнт = true
+        displayVertex(indexStart); //вивід вершини
+        theQueue.insert(indexStart); //вставка в чергу
+        int v2;
+
+        while(! theQueue.isEmpty() ) { // пока черга не пуста
+            int v1 = theQueue.remove();// извлечь первый элемент в очереди
+
+
+            while((v2 = getAdjUnvisitedVertex(v1)) != -1){
+
+                vertexList[v2].wasVisited = true;
+                displayVertex(v2);
+                theQueue.insert(v2);
+                if(lst.compare(getMark(v2),lst) != -1){
+                    return lst.compare(getMark(v2),lst);
                 }
             }
         }
-        return false;                        // Целевой узел недостижим
+        for (int i = 0; i < nVertex; i++) {
+            vertexList[i].wasVisited = false;
+        }
+        return -1;
     }
 
 

@@ -6,12 +6,12 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Tree tree = new Tree();
         Graph graph = new Graph();
-        tree.add("client1", "street 2");
-        tree.add("client2", "street 6");
+        tree.add("client1", "street1");
+        tree.add("client2", "street6");
 
         LinkedList<String> storeAddress = new LinkedList<>();
-        storeAddress.addFirst("street4");
-        storeAddress.addFirst("street6");
+        storeAddress.addFirst("street2");
+        storeAddress.addFirst("street7");//6
 
         graph.addVert("street1");//0
         graph.addVert("street2");//1
@@ -30,8 +30,11 @@ public class Main {
         graph.addEdge(1, 3);
         graph.addEdge(5, 0);
         graph.addEdge(6, 1);
+        graph.addEdge(1, 4);
+        graph.addEdge(6, 4);
+        graph.addEdge(2, 5);
 
-//        client.displayTree();
+
         System.out.println("Будь ласка, введіть ім'я клієнта");
         String clientName = scanner.nextLine();
         System.out.println("Ви ввели ім'я " + clientName);
@@ -39,22 +42,19 @@ public class Main {
         if (found != null) {
             System.out.println("Пошук успішний!");
             found.printNode();
-            storeAddress.display();
+            String clientAddress = found.getAddress();
+            System.out.println("");
 
-//            //з дерева отримуєсо вулицю клієнта і магазину
-//            String clientAddress = found.getAddress(0);
-//            String storeAddress = found.getAddress(1);
-//            //виводимо ці вулиці
-//            System.out.println(clientAddress);
-//            System.out.println(storeAddress);
-//
-//            int clientIndex = graph.findInGraph(clientAddress);
-//            int storeIndex = graph.findInGraph(storeAddress);
-//            System.out.println(clientIndex);
-//            System.out.println(storeIndex);
-
-
-
+            System.out.println("Використовуємо BFS");
+            System.out.println("Шлях від клієнта до найближчого магазину");
+            int path = graph.BFS(clientAddress, storeAddress);
+            if(path != -1){
+                System.out.println("");
+                System.out.println("Магазин успішно знайдено!");
+                System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(path));
+            }else{
+                System.out.println("Магазин не знайдено!");
+            }
         } else {
             System.out.println("Такого клієнта не знайдено.");
         }
