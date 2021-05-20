@@ -1,4 +1,3 @@
-
 public class Graph {
     public static class Vertex {
         public String mark;
@@ -10,47 +9,31 @@ public class Graph {
         }
     }
 
-    public static class Distance {
-        public int distance; //відстань
-        public int parent; //батько вершини
+    final int size = 10; //розмір масиву
+    Vertex[] vertexList; //масив вершин
+    int[][] matrix; //матриця суміжності
+    int nVertex; //поточна к-ть вершин
+    Stack theStack; //стек для DFS
+    Queue theQueue; //стек для BFS
 
-        public Distance(int dist, int par) {
-            distance = dist;
-            parent = par;
-        }
-    }
-
-
-    final int amount = 10;
-    final int infinity = 10000000;
-    Vertex[] vertexList; // Масив вершин
-    int[][] matrix; // Матрица смежности
-    int nVertex; // Текущее количество вершин
-    int nTree; //к-ть вершин в дереві
-    Distance[] shortDist; //масив коротких шляхів
-    int currVert; //тек вершина
-    int length; //відстань від поч до кінц вершини
-    Stack theStack;
-    Queue theQueue;
-//    public char sortedArray[];
 
     public Graph() {
-        vertexList = new Vertex[amount];
-        matrix = new int[amount][amount];
+        vertexList = new Vertex[size]; //список вершин
+        matrix = new int[size][size]; //матриця сум.
         nVertex = 0;
-        for (int i = 0; i < amount; i++) {
-            for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                //заповнюємо нулями
                 matrix[i][j] = 0;
             }
         }
         theStack = new Stack();
-        shortDist = new Distance[amount];
         theQueue = new Queue();
     }
 
     public void addVert(String marker) {
         vertexList[nVertex++] = new Vertex(marker);
-        ;
+
     }
 
     public void addEdge(int start, int finish) {
@@ -62,20 +45,20 @@ public class Graph {
         System.out.print(""+vertexList[i].mark+"\t");
     }
 
-    public int findInGraph(String address) {
-        int index = 0;
-        while (vertexList[index].mark != null) {
-            if (address.compareTo(vertexList[index].mark) == 0) {
-                return index;
-            } else {
-                index++;
-            }
-        }
-        if (vertexList[index].mark == null) {
-            System.out.println("Такого адресу не знайдено!\n");
-        }
-        return -1;
-    }
+//    public int findInGraph(String address) {
+//        int index = 0;
+//        while (vertexList[index].mark != null) {
+//            if (address.compareTo(vertexList[index].mark) == 0) {
+//                return index;
+//            } else {
+//                index++;
+//            }
+//        }
+//        if (vertexList[index].mark == null) {
+//            System.out.println("Такого адресу не знайдено!\n");
+//        }
+//        return -1;
+//    }
 
     String getMark(int index){
         return vertexList[index].mark;
@@ -128,7 +111,7 @@ public class Graph {
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].wasVisited = false;
         }
-        return -1;
+        return indexStart;
     }
 
     int DFS(String start_node, LinkedList<String> lst) {
@@ -156,7 +139,7 @@ public class Graph {
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].wasVisited = false;
         }
-        return -6;
+        return indexStart;
     }
 
 }

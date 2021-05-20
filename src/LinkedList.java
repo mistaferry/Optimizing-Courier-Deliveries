@@ -22,7 +22,7 @@ public class LinkedList<String> {
             return tempo;
         }
     }
-    
+
     public class Node {
 
         String data;
