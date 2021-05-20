@@ -6,6 +6,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Tree tree = new Tree();
         Graph graph = new Graph();
+        WeightGraph weightgraph = new WeightGraph();
 
         tree.add("client1", "street1");
 
@@ -34,7 +35,6 @@ public class Main {
         graph.addEdge(6, 4);
         graph.addEdge(2, 5);
 
-        WeightGraph weightgraph = new WeightGraph();
         weightgraph.addVert("street1");//0
         weightgraph.addVert("street2");//1
         weightgraph.addVert("street3");//2
@@ -43,19 +43,18 @@ public class Main {
         weightgraph.addVert("street6");//5
         weightgraph.addVert("street7");//6
 
-        weightgraph.addEdge(0, 6,30);
-        weightgraph.addEdge(0, 4,47);
-        weightgraph.addEdge(4, 2,20);
-        weightgraph.addEdge(2, 1,100);
-        weightgraph.addEdge(3, 5,90);
-        weightgraph.addEdge(3, 4,25);
-        weightgraph.addEdge(1, 3,46);
-        weightgraph.addEdge(5, 0,88);
-        weightgraph.addEdge(6, 1,69);
-        weightgraph.addEdge(1, 4,12);
-        weightgraph.addEdge(6, 4,30);
-        weightgraph.addEdge(2, 5,10);
-
+        weightgraph.addEdge(0, 6, 30);
+        weightgraph.addEdge(0, 4, 47);
+        weightgraph.addEdge(4, 2, 20);
+        weightgraph.addEdge(2, 1, 100);
+        weightgraph.addEdge(3, 5, 90);
+        weightgraph.addEdge(3, 4, 25);
+        weightgraph.addEdge(1, 3, 46);
+        weightgraph.addEdge(5, 0, 88);
+        weightgraph.addEdge(6, 1, 69);
+        weightgraph.addEdge(1, 4, 12);
+        weightgraph.addEdge(6, 4, 30);
+        weightgraph.addEdge(2, 5, 10);
 
 
         System.out.println("Будь ласка, введіть ім'я клієнта");
@@ -68,32 +67,44 @@ public class Main {
             String clientAddress = found.getAddress();
             System.out.println();
 
-//            System.out.println("Виберіть спосіб пошуку шляху від клієнта до найближчого магазину :");
-//            System.out.println("1. BFS");
-//            System.out.println("2. DFS");
-//            int choice = scanner.nextInt();
-//            switch(choice){
-//                case 1:
-//                    System.out.println("Використовуємо BFS");
-//                    System.out.println("Шлях від клієнта до найближчого магазину");
-//                    int pathBfs = graph.BFS(clientAddress, storeAddress);
-//                    System.out.println();
-//                    System.out.println("Магазин успішно знайдено!");
-//                    System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathBfs));
-//                    break;
-//                case 2:
-//                    System.out.println("Використовуємо DFS");
-//                    System.out.println("Шлях від клієнта до найближчого магазину");
-//                    int pathDfs = graph.DFS(clientAddress, storeAddress);
-//                    System.out.println();
-//                    System.out.println("Магазин успішно знайдено!");
-//                    System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathDfs));
-//                    break;
-//                default:
-//                    break;
-//            }
+
+            System.out.println("Використовуємо BFS");
+            System.out.println("Шлях від клієнта до найближчого магазину");
+            int pathBfs = graph.BFS(clientAddress, storeAddress);
+            System.out.println();
+            System.out.println("Магазин успішно знайдено!");
+            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathBfs));
+            System.out.println();
+            System.out.println("Використовуємо DFS");
+            System.out.println("Шлях від клієнта до найближчого магазину");
+            int pathDfs = graph.DFS(clientAddress, storeAddress);
+            System.out.println();
+            System.out.println("Магазин успішно знайдено!");
+            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathDfs));
+            System.out.println();
+            System.out.println("Використовуємо Алгоритм Дейкстрі");
+            System.out.println("Шукаємо найкоротший шлях від клієнта на магазину ");
             int f = weightgraph.distance(clientAddress, storeAddress);
-            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(f));
+            System.out.println("Мінімальною відстань буде до магазину за адресом  - " + storeAddress.findByIndex(f));
+            weightgraph.deleteVertex("street5");
+            System.out.println("Використовуємо BFS");
+            System.out.println("Шлях від клієнта до найближчого магазину");
+            pathBfs = graph.BFS(clientAddress, storeAddress);
+            System.out.println();
+            System.out.println("Магазин успішно знайдено!");
+            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathBfs));
+            System.out.println();
+            System.out.println("Використовуємо DFS");
+            System.out.println("Шлях від клієнта до найближчого магазину");
+            pathDfs = graph.DFS(clientAddress, storeAddress);
+            System.out.println();
+            System.out.println("Магазин успішно знайдено!");
+            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathDfs));
+//            System.out.println();
+//            System.out.println("Використовуємо Алгоритм Дейкстрі");
+//            System.out.println("Шукаємо найкоротший шлях від клієнта на магазину ");
+//            f = weightgraph.distance(clientAddress, storeAddress);
+//            System.out.println("Мінімальною відстань буде до магазину за адресом  - " + storeAddress.findByIndex(f));
 
         } else {
             System.out.println("Такого клієнта не знайдено.");

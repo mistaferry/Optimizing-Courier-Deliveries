@@ -1,4 +1,6 @@
 public class Graph {
+
+
     public static class Vertex {
         public String mark;
         public boolean wasVisited;
@@ -104,12 +106,21 @@ public class Graph {
                 displayVertex(v2);
                 theQueue.insert(v2);
                 if(lst.compare(getMark(v2),lst) != -1){
+                    for (int i = 0; i < nVertex; i++) {
+                        vertexList[i].wasVisited = false;
+                    }
+                    while (!theQueue.isEmpty()){
+                        theQueue.remove();
+                    }
                     return lst.compare(getMark(v2),lst);
                 }
             }
         }
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].wasVisited = false;
+        }
+        while (!theQueue.isEmpty()){
+            theQueue.remove();
         }
         return indexStart;
     }
@@ -132,6 +143,12 @@ public class Graph {
                 displayVertex(v);
                 theStack.push(v);
                 if(lst.compare(getMark(v),lst) != -1){
+                    for (int i = 0; i < nVertex; i++) {
+                        vertexList[i].wasVisited = false;
+                    }
+                    while (!theStack.isEmpty()){
+                        theStack.pop();
+                    }
                     return lst.compare(getMark(v),lst);
                 }
             }
@@ -139,7 +156,12 @@ public class Graph {
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].wasVisited = false;
         }
+        while (!theStack.isEmpty()){
+            theStack.pop();
+        }
         return indexStart;
     }
+
+
 
 }

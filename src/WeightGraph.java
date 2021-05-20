@@ -115,8 +115,20 @@ public class WeightGraph {
         }
     }
 
-    public void displayPaths(int j, LinkedList<String> lst) {
-       
+    public void displayPaths(LinkedList<String> lst) {
+        int index;
+        for (int j = 0; j < nVertex; j++) // display contents of sPath[]
+        {
+            index = lst.compare(getMark(j), lst);
+            if(index != -1) {
+                if (sPath[j].distance == infinity)
+                    System.out.print("inf"); // inf
+                else
+                System.out.print("До магазину за адресом - " + vertexList[j].mark + " найкоротший шлях - " + sPath[j].distance+"км.\n"); // B=
+
+            }
+        }
+
     }
 
     int distance(String start_node, LinkedList<String> lst) {
@@ -148,7 +160,7 @@ public class WeightGraph {
 
 
         }
-        displayPaths(lst.compare(getMark(currVert),lst), lst);
+        displayPaths( lst);
         nTree = 0;
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].inTree = false;
@@ -156,5 +168,32 @@ public class WeightGraph {
         return startTree;
     }
 
+    void rowUp(int row, int n) {
+        for(int column =0; column<n; column++) {
+            matrix[row][column] = matrix[row + 1][column];
+        }
+    }
+
+    void columnLeft(int column, int n) {
+        for(int row=0; row<n; row++) {
+            matrix[row][column] = matrix[row][column + 1];
+        }
+    }
+
+    void deleteVertex(String address){
+        int index = getIndexByMark(address);
+        if(index != nVertex - 1){
+            for (int i = 0; i < nVertex-1; i++) {
+                vertexList[i] = vertexList[i+1];
+            }
+            for (int row = 0; row < nVertex-1; row++) {
+                rowUp(row, nVertex);
+            }
+            for (int column = 0; column < nVertex-1; column++) {
+                columnLeft(column, nVertex-1);
+            }
+        }
+        nVertex--;
+    }
 
 }
