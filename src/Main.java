@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
@@ -7,20 +8,43 @@ public class Main {
         Graph graph = new Graph();
         WeightGraph weightgraph = new WeightGraph();
 
-        tree.add("client1", "street1");
-        tree.add("client2", "street3");
+
+
+        try {
+            File address = new File("src/Address");
+            //создаем объект FileReader для объекта File
+            FileReader fr = new FileReader(address);
+            //создаем BufferedReader с существующего FileReader для построчного считывания
+            BufferedReader reader = new BufferedReader(fr);
+            // считаем сначала первую строку
+            String string = reader.readLine();
+            while (string != null) {
+                // считываем остальные строки в цикле
+                graph.addVert(string);
+                weightgraph.addVert(string);
+                string = reader.readLine();
+            }
+
+            File clients = new File("src/Clients");
+            fr = new FileReader(clients);
+            //создаем BufferedReader с существующего FileReader для построчного считывания
+            reader = new BufferedReader(fr);
+            // считаем сначала первую строку
+            string = reader.readLine();
+            int index = 0;
+            while (string != null) {
+                // считываем остальные строки в цикле
+                tree.add(string, graph.getMark(index));
+                index += 2;
+                string = reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         LinkedList<String> storeAddress = new LinkedList<>();
-        storeAddress.addFirst("street2");
-        storeAddress.addFirst("street6");
-
-        graph.addVert("street1");//0
-        graph.addVert("street2");//1
-        graph.addVert("street3");//2
-        graph.addVert("street4");//3
-        graph.addVert("street5");//4
-        graph.addVert("street6");//5
-        graph.addVert("street7");//6
+        storeAddress.addFirst(graph.getMark(1));
+        storeAddress.addFirst(graph.getMark(5));
 
         graph.addEdge(0, 6);
         graph.addEdge(0, 4);
@@ -35,15 +59,6 @@ public class Main {
         graph.addEdge(6, 4);
         graph.addEdge(2, 5);
         graph.addEdge(2, 3);
-
-
-        weightgraph.addVert("street1");//0
-        weightgraph.addVert("street2");//1
-        weightgraph.addVert("street3");//2
-        weightgraph.addVert("street4");//3
-        weightgraph.addVert("street5");//4
-        weightgraph.addVert("street6");//5
-        weightgraph.addVert("street7");//6
 
         weightgraph.addEdge(0, 6, 30);
         weightgraph.addEdge(0, 4, 47);

@@ -52,11 +52,6 @@ public class WeightGraph {
         matrix[start][finish] = weight;
     }
 
-
-    public void displayVertex(int i) {
-        System.out.print("" + vertexList[i].mark + "\t");
-    }
-
     String getMark(int index) {
         return vertexList[index].mark;
     }
@@ -131,7 +126,7 @@ public class WeightGraph {
 
     }
 
-    int distance(String start_node, LinkedList<String> lst) {
+    void distance(String start_node, LinkedList<String> lst) {
         int startTree = getIndexByMark(start_node);
         vertexList[startTree].inTree = true;
         nTree = 1;
@@ -164,7 +159,6 @@ public class WeightGraph {
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].inTree = false;
         }
-        return  -1;
     }
 
     void rowUp(int row, int n) {
