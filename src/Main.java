@@ -86,25 +86,30 @@ public class Main {
             System.out.println("Шукаємо найкоротший шлях від клієнта на магазину ");
             int f = weightgraph.distance(clientAddress, storeAddress);
             System.out.println("Мінімальною відстань буде до магазину за адресом  - " + storeAddress.findByIndex(f));
-            weightgraph.deleteVertex("street5");
+
+
+            graph.deleteVertex("street3");
+            weightgraph.deleteVertex("street7");
+
+
             System.out.println("Використовуємо BFS");
             System.out.println("Шлях від клієнта до найближчого магазину");
-            pathBfs = graph.BFS(clientAddress, storeAddress);
+            int pathBfs1 = graph.BFS(clientAddress, storeAddress);
             System.out.println();
             System.out.println("Магазин успішно знайдено!");
-            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathBfs));
+            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathBfs1));
             System.out.println();
             System.out.println("Використовуємо DFS");
             System.out.println("Шлях від клієнта до найближчого магазину");
-            pathDfs = graph.DFS(clientAddress, storeAddress);
+            int pathDfs1 = graph.DFS(clientAddress, storeAddress);
             System.out.println();
             System.out.println("Магазин успішно знайдено!");
-            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathDfs));
-//            System.out.println();
-//            System.out.println("Використовуємо Алгоритм Дейкстрі");
-//            System.out.println("Шукаємо найкоротший шлях від клієнта на магазину ");
-//            f = weightgraph.distance(clientAddress, storeAddress);
-//            System.out.println("Мінімальною відстань буде до магазину за адресом  - " + storeAddress.findByIndex(f));
+            System.out.println("Адрес найближчого магазину - " + storeAddress.findByIndex(pathDfs1));
+            System.out.println();
+            System.out.println("Використовуємо Алгоритм Дейкстрі");
+            System.out.println("Шукаємо найкоротший шлях від клієнта на магазину ");
+            f = weightgraph.distance(clientAddress, storeAddress);
+            System.out.println("Мінімальною відстань буде до магазину за адресом  - " + storeAddress.findByIndex(f));
 
         } else {
             System.out.println("Такого клієнта не знайдено.");

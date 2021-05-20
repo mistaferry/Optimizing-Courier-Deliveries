@@ -1,5 +1,5 @@
 public class Queue {
-    final int size = 10;
+    int size = 10;
     int[] theQueue;
     int front;
     int rear;

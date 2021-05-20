@@ -110,7 +110,7 @@ public class Graph {
                         vertexList[i].wasVisited = false;
                     }
                     while (!theQueue.isEmpty()){
-                        theQueue.remove();
+                         theQueue.remove();
                     }
                     return lst.compare(getMark(v2),lst);
                 }
@@ -156,12 +156,36 @@ public class Graph {
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].wasVisited = false;
         }
-        while (!theStack.isEmpty()){
-            theStack.pop();
-        }
         return indexStart;
     }
 
+    void rowUp(int row, int n) {
+        for(int column =0; column<n; column++) {
+            matrix[row][column] = matrix[row + 1][column];
+        }
+    }
+
+    void columnLeft(int column, int n) {
+        for(int row=0; row<n; row++) {
+            matrix[row][column] = matrix[row][column + 1];
+        }
+    }
+
+    void deleteVertex(String address){
+        int index = getIndexByMark(address);
+        if(index != nVertex - 1){
+            for (int i = index; i < nVertex-1; i++) {
+                vertexList[i] = vertexList[i+1];
+            }
+            for (int row = index; row < nVertex-1; row++) {
+                rowUp(row, nVertex);
+            }
+            for (int column = index; column < nVertex-1; column++) {
+                columnLeft(column, nVertex-1);
+            }
+        }
+        nVertex--;
+    }
 
 
 }
