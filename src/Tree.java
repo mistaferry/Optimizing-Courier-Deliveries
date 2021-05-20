@@ -53,14 +53,4 @@ public class Tree {
             }
         }
     }
-
-    public void displayTree() {
-        //якщо корінь = null, то дерево пусте
-        if (root == null) {
-            System.out.println("Empty tree!");
-        } else {
-            root.search();
-        }
-    }
-
 }

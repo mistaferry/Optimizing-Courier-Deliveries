@@ -35,7 +35,6 @@ public class Graph {
 
     public void addVert(String marker) {
         vertexList[nVertex++] = new Vertex(marker);
-
     }
 
     public void addEdge(int start, int finish) {
@@ -47,20 +46,6 @@ public class Graph {
         System.out.print(""+vertexList[i].mark+"\t");
     }
 
-//    public int findInGraph(String address) {
-//        int index = 0;
-//        while (vertexList[index].mark != null) {
-//            if (address.compareTo(vertexList[index].mark) == 0) {
-//                return index;
-//            } else {
-//                index++;
-//            }
-//        }
-//        if (vertexList[index].mark == null) {
-//            System.out.println("Такого адресу не знайдено!\n");
-//        }
-//        return -1;
-//    }
 
     String getMark(int index){
         return vertexList[index].mark;
@@ -122,7 +107,7 @@ public class Graph {
         while (!theQueue.isEmpty()){
             theQueue.remove();
         }
-        return indexStart;
+        return -1;
     }
 
     int DFS(String start_node, LinkedList<String> lst) {
@@ -156,7 +141,7 @@ public class Graph {
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].wasVisited = false;
         }
-        return indexStart;
+        return -1;
     }
 
     void rowUp(int row, int n) {

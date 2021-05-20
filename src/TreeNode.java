@@ -1,6 +1,5 @@
 public class TreeNode {
     public String clientName; //ключ
-    public int arraySize = 2;
     public String address; //інші дані
     public TreeNode leftChild, rightChild;
 

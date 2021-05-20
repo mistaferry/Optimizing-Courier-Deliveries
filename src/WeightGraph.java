@@ -122,7 +122,7 @@ public class WeightGraph {
             index = lst.compare(getMark(j), lst);
             if(index != -1) {
                 if (sPath[j].distance == infinity)
-                    System.out.print("inf"); // inf
+                    System.out.print("Шлях до " + vertexList[j].mark + " нескінченний\n"); // inf
                 else
                 System.out.print("До магазину за адресом - " + vertexList[j].mark + " найкоротший шлях - " + sPath[j].distance+"км.\n"); // B=
 
@@ -146,7 +146,6 @@ public class WeightGraph {
             int minDist = sPath[indexMin].distance;
 
             if (minDist == infinity) {
-                System.out.println("Відстань безкінечна!");
                 break;
             } else {
                 currVert = indexMin;
@@ -165,7 +164,7 @@ public class WeightGraph {
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].inTree = false;
         }
-        return startTree;
+        return  -1;
     }
 
     void rowUp(int row, int n) {
@@ -183,13 +182,13 @@ public class WeightGraph {
     void deleteVertex(String address){
         int index = getIndexByMark(address);
         if(index != nVertex - 1){
-            for (int i = 0; i < nVertex-1; i++) {
+            for (int i = index; i < nVertex-1; i++) {
                 vertexList[i] = vertexList[i+1];
             }
-            for (int row = 0; row < nVertex-1; row++) {
+            for (int row = index; row < nVertex-1; row++) {
                 rowUp(row, nVertex);
             }
-            for (int column = 0; column < nVertex-1; column++) {
+            for (int column = index; column < nVertex-1; column++) {
                 columnLeft(column, nVertex-1);
             }
         }

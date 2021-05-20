@@ -38,16 +38,8 @@ public class LinkedList<String> {
             return data;
         }
 
-        public void setData(String data) {
-            this.data = data;
-        }
-
         public Node getNext() {
             return next;
-        }
-
-        public void setNext(Node next) {
-            this.next = next;
         }
 
         public java.lang.String toString() {
@@ -63,22 +55,6 @@ public class LinkedList<String> {
         head = node; // новий елемент стає першим
     }
 
-    //показує всі елементи, які присутні в списку
-    public void display() {
-        Node current = head;
-        if (head == null) {
-            System.out.println("Список пустий");
-        } else {
-            //друк кожного елемента, збільшуючи вказівник
-            System.out.println("Список адрес магазинів");
-            while (current != null) {
-                System.out.print(current.data + " ");
-                current = current.next;
-                System.out.println("");
-            }
-        }
-    }
-
     public String findByIndex(int index) {
         Node current = head;
         if (head == null) {
@@ -90,26 +66,6 @@ public class LinkedList<String> {
             return current.getData();
         }
         return null;
-    }
-
-    public void index(int index) {
-        Node current = head;
-        if (head == null) {
-            System.out.println("List is empty");
-        } else {
-            for (int i = 0; i<index; i++) {
-                current = current.next;
-            }
-        }
-    }
-    
-    public boolean wasVisited(int index){
-        Node current = head;
-        boolean wasVisited = false;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
-        return true;
     }
 
     public LiIterator iterator() {
@@ -126,11 +82,6 @@ public class LinkedList<String> {
             listSize++;
         }
         return listSize;
-    }
-
-    public void removeFirst() {
-        //перший елемент видаляємо і першим встає вже другий
-        head = head.next;
     }
 
     int compare(String address, LinkedList<String> lst){
