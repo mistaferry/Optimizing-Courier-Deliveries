@@ -12,14 +12,12 @@ public class Main {
 
         try {
             File address = new File("src/Address");
-            //создаем объект FileReader для объекта File
             FileReader fr = new FileReader(address);
-            //создаем BufferedReader с существующего FileReader для построчного считывания
             BufferedReader reader = new BufferedReader(fr);
-            // считаем сначала первую строку
+            //зчитауємо перший рядок
             String string = reader.readLine();
             while (string != null) {
-                // считываем остальные строки в цикле
+                //зчитуємо решту рядків
                 graph.addVert(string);
                 weightgraph.addVert(string);
                 string = reader.readLine();
@@ -27,13 +25,12 @@ public class Main {
 
             File clients = new File("src/Clients");
             fr = new FileReader(clients);
-            //создаем BufferedReader с существующего FileReader для построчного считывания
             reader = new BufferedReader(fr);
-            // считаем сначала первую строку
+            //зчитауємо перший рядок
             string = reader.readLine();
             int index = 0;
             while (string != null) {
-                // считываем остальные строки в цикле
+                //зчитуємо решту рядків
                 tree.add(string, graph.getMark(index));
                 index += 2;
                 string = reader.readLine();
@@ -106,13 +103,11 @@ public class Main {
 
             System.out.println();
 
-            String delete1 = "street4";
-            String delete2 = "street7";
-            graph.deleteVertex(delete1);
-            graph.deleteVertex(delete2);
-            weightgraph.deleteVertex(delete1);
-            weightgraph.deleteVertex(delete2);
-            System.out.println("Перераховуємо шляхи після видалення "+delete1+", "+delete2);
+            weightgraph.deleting(0,6);
+            graph.deleting(0,6);
+            weightgraph.deleting(2,1);
+            graph.deleting(2,1);
+            System.out.println("Перераховуємо шляхи після розрівання деяких вершин");
             System.out.println();
 
 

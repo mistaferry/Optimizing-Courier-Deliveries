@@ -10,12 +10,14 @@ public class Queue {
         rear = -1;
     }
 
+    //додаємо в чергу
     void insert(int index){
         if(rear == size -1)
             rear = -1;
         theQueue[++rear] = index;
     }
 
+    //видаляємо елемент
     int remove(){
         int t = theQueue[front++];
         if(front == size)
@@ -23,6 +25,7 @@ public class Queue {
         return t;
     }
 
+    //перевірка чи черга пуста
     boolean isEmpty(){
         return (rear+1 == front || (front+ size -1==rear));
     }

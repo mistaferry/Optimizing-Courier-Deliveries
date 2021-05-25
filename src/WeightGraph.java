@@ -1,11 +1,11 @@
 public class WeightGraph {
-    public static class DistPar {
+    public static class Distance {
         int distance;
-        int parentV;
+        int parent;
 
-        public DistPar(int dist, int parent) {
+        public Distance(int dist, int parent) {
             distance = dist;
-            parentV = parent;
+            this.parent = parent;
         }
     }
 
@@ -26,8 +26,8 @@ public class WeightGraph {
     int nVertex; //поточна к-ть вершин
 
     int nTree; //к-ть вершин в дереві
-    DistPar[] sPath; //масив коротких шляхів
-    int currVert; //поточна вершина вершина
+    Distance[] shortRoute; //масив коротких шляхів
+    int currentVertex; //поточна вершина вершина
     int length; //відстань від поч. до кінц. вершини
 
 
@@ -38,28 +38,34 @@ public class WeightGraph {
         nTree = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
+                //заповнюємо "нескінченними" числами
                 matrix[i][j] = infinity;
             }
         }
-        sPath = new DistPar[size];
+        shortRoute = new Distance[size];
     }
 
+    //додаємо вершину
     public void addVert(String marker) {
         vertexList[nVertex++] = new Vertex(marker);
     }
 
-    public void addEdge(int start, int finish, int weight) {
-        matrix[start][finish] = weight;
+    //додаємо ребро
+    public void addEdge(int start, int end, int weight) {
+        matrix[start][end] = weight;
     }
 
+    //отримуємо значення за індексом
     String getMark(int index) {
         return vertexList[index].mark;
     }
 
-    int getIndexByMark(String start_node) {
+    //отримуємо індекс за назвою
+    int getIndexByMark(String startNode) {
         int i = 0;
         while (i < nVertex) {
-            if (getMark(i).equals(start_node)) {
+            //якщо адреси співпадають
+            if (getMark(i).equals(startNode)) {
                 return i;
             }
             i++;
@@ -67,44 +73,35 @@ public class WeightGraph {
         return -1;
     }
 
-    public int minLength() // Поиск в sPath элемента
-    { // с наименьшим расстоянием
-        int minDist = infinity; // Исходный высокий "минимум"
-        int min = 0;
-        for (int j = 1; j < nVertex; j++) // Для каждой вершины
-        { // Если она не включена в дерево
-            if (!vertexList[j].inTree && // и ее расстояние меньше
-                    sPath[j].distance < minDist) // старого минимума
-            {
-                minDist = sPath[j].distance;
-                min = j; // Обновление минимума
+    public int minLength(){ //пошук елемента з найменшою відстанню
+
+        int minDistance = infinity; //початковий мінімум
+        int minIndex = 0;
+        for (int j = 1; j < nVertex; j++) { //для кожної вершини, яка не включена в дерево та її відстань менша за попередню
+            if (!vertexList[j].inTree && shortRoute[j].distance < minDistance) {
+                minDistance = shortRoute[j].distance;
+                minIndex = j;
             }
         }
-        return min; // Метод возвращает индекс
+        //повертаємо індекс
+        return minIndex;
     }
 
-    public void adjust_sPath() {
-// Обновление данных в массиве кратчайших путей sPath
-        int column = 1; // Начальная вершина пропускается
-        while (column < nVertex) // Перебор столбцов
-        {
-// Если вершина column уже включена в дерево, она пропускается
+    public void shortPath() {
+        int column = 1; //пропускаємо вершину,з якої починаємо
+        while (column < nVertex){    //перебираємо стовбці
+            //якщо вершина включена, вона пропускається
             if (vertexList[column].inTree) {
                 column++;
                 continue;
             }
-// Вычисление расстояния для одного элемента sPath
-// Получение ребра от currentVert к column
-            int currentToFringe = matrix[currVert][column];
-// Суммирование расстояний
-            int startToFringe = length + currentToFringe;
-// Определение расстояния текущего элемента sPath
-            int sPathDist = sPath[column].distance;
-// Сравнение расстояния от начальной вершины с элементом sPath
-            if (startToFringe < sPathDist) // Если меньше,
-            { // данные sPath обновляются
-                sPath[column].parentV = currVert;
-                sPath[column].distance = startToFringe;
+            int currentToFringe = matrix[currentVertex][column]; //отримання ребра
+            int startToFringe = length + currentToFringe;   //сумуємо відстані
+            int sPathDist = shortRoute[column].distance;    //відстань поточного
+            //порівнюємо відстань від початкової вершини є елементом
+            if (startToFringe < sPathDist){
+                shortRoute[column].parent = currentVertex;
+                shortRoute[column].distance = startToFringe;
             }
             column++;
         }
@@ -112,81 +109,61 @@ public class WeightGraph {
 
     public void displayPaths(LinkedList<String> lst) {
         int index;
-        for (int j = 0; j < nVertex; j++) // display contents of sPath[]
-        {
+        for (int j = 0; j < nVertex; j++) { //виводимо зміст
             index = lst.compare(getMark(j), lst);
+            //якщо вершина, на якій ми знаходимо є магазином
             if(index != -1) {
-                if (sPath[j].distance == infinity)
-                    System.out.print("Шлях до " + vertexList[j].mark + " нескінченний\n"); // inf
-                else
-                System.out.print("До магазину за адресом - " + vertexList[j].mark + " найкоротший шлях - " + sPath[j].distance+"км.\n"); // B=
-
+                if (shortRoute[j].distance == infinity) {
+                    System.out.print("Шлях до " + vertexList[j].mark + " нескінченний\n");  //якщо шлях нескінченний
+                } else {
+                    System.out.print("До магазину за адресом - " + vertexList[j].mark + " найкоротший шлях - " + shortRoute[j].distance + "км.\n");
+                }
             }
         }
-
     }
 
-    void distance(String start_node, LinkedList<String> lst) {
-        int startTree = getIndexByMark(start_node);
-        vertexList[startTree].inTree = true;
+    void distance(String startNode, LinkedList<String> list) {
+        //отримуємо індекс вершини, з якої будемо починати пошук
+        int startTree = getIndexByMark(startNode);
+
+        vertexList[startTree].inTree = true;    //якщо вершина включена в дерево
         nTree = 1;
+
 
         for (int i = 0; i < nVertex; i++) {
             int temp = matrix[startTree][i];
-            sPath[i] = new DistPar(temp, startTree);
+            shortRoute[i] = new Distance(temp, startTree);
         }
 
         while (nTree < nVertex) {
+            //отримуємо індекс мінімума
             int indexMin = minLength();
-            int minDist = sPath[indexMin].distance;
+            //отримуємо значення мінімума
+            int minDist = shortRoute[indexMin].distance;
 
+            //якщо мінімум = нескінченності
             if (minDist == infinity) {
                 break;
             } else {
-                currVert = indexMin;
-                length = sPath[indexMin].distance;
-
+                //поверт. до ближчої вершини
+                currentVertex = indexMin;
+                length = shortRoute[indexMin].distance;
             }
-
-            vertexList[currVert].inTree = true;
+            //включення поточної вершини в дерево
+            vertexList[currentVertex].inTree = true;
             nTree++;
-            adjust_sPath();
-
-
+            shortPath();
         }
-        displayPaths( lst);
+        //вивід значення
+        displayPaths( list);
         nTree = 0;
+        //очищення дерева
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].inTree = false;
         }
     }
 
-    void rowUp(int row, int n) {
-        for(int column =0; column<n; column++) {
-            matrix[row][column] = matrix[row + 1][column];
-        }
+    public void deleting(int start, int end) {
+        matrix[start][end] = infinity;
     }
-
-    void columnLeft(int column, int n) {
-        for(int row=0; row<n; row++) {
-            matrix[row][column] = matrix[row][column + 1];
-        }
-    }
-
-    void deleteVertex(String address){
-        int index = getIndexByMark(address);
-        if(index != nVertex - 1){
-            for (int i = index; i < nVertex-1; i++) {
-                vertexList[i] = vertexList[i+1];
-            }
-            for (int row = index; row < nVertex-1; row++) {
-                rowUp(row, nVertex);
-            }
-            for (int column = index; column < nVertex-1; column++) {
-                columnLeft(column, nVertex-1);
-            }
-        }
-        nVertex--;
-    }
-
 }

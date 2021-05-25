@@ -26,17 +26,21 @@ public class Tree {
     }
 
     public void add(String key, String data) {
+        //новий вузол
         TreeNode node = new TreeNode();
         node.clientName = key;
         node.address = data;
 
+        //якщо корінь пустий
         if (root == null) {
             root = node;
         } else {
+            //поточний вузол
             TreeNode cur = root;
             TreeNode parent;
             while (true) {
                 parent = cur;
+                //якщо назва йде раніше, то наступний вузол поміщаємо вліво
                 if (key.compareTo(cur.clientName) < 0) {
                     cur = cur.leftChild;
                     if (cur == null) {
@@ -44,6 +48,7 @@ public class Tree {
                         return;
                     }
                 } else {
+                    //в іншому випадку поміщаємо вправо
                     cur = cur.rightChild;
                     if (cur == null) {
                         parent.rightChild = node;

@@ -12,16 +12,4 @@ public class TreeNode {
     public String getAddress(){
         return address;
     }
-
-    public void search() {
-        //якщо вузол не = null то шукаємо зліва
-        if (leftChild != null) {
-            leftChild.search();
-        }
-        printNode();
-        //якщо вузол не = null то шукаємо справа
-        if (rightChild != null) {
-            rightChild.search();
-        }
-    }
 }

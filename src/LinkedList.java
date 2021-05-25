@@ -2,6 +2,7 @@ import java.util.Iterator;
 
 public class LinkedList<String> {
 
+    //ітератор
     public class LiIterator implements Iterator {
 
         private Node current;
@@ -24,7 +25,6 @@ public class LinkedList<String> {
     }
 
     public class Node {
-
         String data;
         Node next;
 
@@ -57,10 +57,11 @@ public class LinkedList<String> {
 
     public String findByIndex(int index) {
         Node current = head;
+        //якщо переший елемент пустий
         if (head == null) {
             System.out.println("List is empty");
         } else {
-            for (int i = 0; i<index; i++) {
+            for (int i = 0; i < index; i++) {
                 current = current.next;
             }
             return current.getData();
@@ -84,9 +85,10 @@ public class LinkedList<String> {
         return listSize;
     }
 
-    int compare(String address, LinkedList<String> lst){
+    int compare(String address, LinkedList<String> lst) {
         for (int i = 0; i < size(); i++) {
-            if(lst.findByIndex(i).equals(address)){
+            //якщо адреси співпадають
+            if (lst.findByIndex(i).equals(address)) {
                 return i;
             }
         }

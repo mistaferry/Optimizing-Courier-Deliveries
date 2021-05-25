@@ -1,6 +1,6 @@
 public class Graph {
 
-
+    //клас для вершини
     public static class Vertex {
         public String mark;
         public boolean wasVisited;
@@ -15,46 +15,52 @@ public class Graph {
     Vertex[] vertexList; //масив вершин
     int[][] matrix; //матриця суміжності
     int nVertex; //поточна к-ть вершин
-    Stack theStack; //стек для DFS
-    Queue theQueue; //стек для BFS
+    Stack stack; //стек для DFS
+    Queue queue; //стек для BFS
 
 
+    //конструктор
     public Graph() {
         vertexList = new Vertex[size]; //список вершин
         matrix = new int[size][size]; //матриця сум.
         nVertex = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                //заповнюємо нулями
+                //заповнюємо нулями матрицю суміжності
                 matrix[i][j] = 0;
             }
         }
-        theStack = new Stack();
-        theQueue = new Queue();
+        stack = new Stack();
+        queue = new Queue();
     }
 
+    //додаємо вершину, передається в метод мітка
     public void addVert(String marker) {
         vertexList[nVertex++] = new Vertex(marker);
     }
 
-    public void addEdge(int start, int finish) {
-        matrix[start][finish] = 1;
+    //додаємо ребра, вказуємо напрям
+    public void addEdge(int start, int end) {
+        matrix[start][end] = 1;
+    }
+
+    //вивід вмісту вершини
+    public void displayVertex(int index) {
+        System.out.print("" + vertexList[index].mark + "\t");
     }
 
 
-    public void displayVertex(int i) {
-        System.out.print(""+vertexList[i].mark+"\t");
-    }
-
-
-    String getMark(int index){
+    //за допомогою індекса, повертаємо аргумент вершини
+    String getMark(int index) {
         return vertexList[index].mark;
     }
 
-    int getIndexByMark(String start_node){
+    //за допомогою адреса, отримуємо його індекс
+    int getIndexByMark(String startNode) {
         int i = 0;
-        while(i < nVertex){
-            if(getMark(i).equals(start_node)){
+        while (i < nVertex) {
+            //якщо адреси співпадають
+            if (getMark(i).equals(startNode)) {
                 return i;
             }
             i++;
@@ -62,115 +68,116 @@ public class Graph {
         return -1;
     }
 
-
-    int getAdjUnvisitedVertex(int vertex){
+    //отримуємо суміжну, невідвідувану до заданої, вершину
+    int unvisitedNeigh(int v) {
         for (int i = 0; i < nVertex; i++) {
-            if((matrix[vertex][i] == 1) && (!vertexList[i].wasVisited)){
+            if ((matrix[v][i] == 1) && (!vertexList[i].wasVisited)) {
                 return i;
             }
         }
         return -1;
     }
 
-    int BFS(String start_node, LinkedList<String> lst) {
+    //пошук в ширину
+    int BFS(String startNode, LinkedList<String> list) {
+        //отримуємо індекс вершини, з якої будемо починати пошук
+        int indexStart = getIndexByMark(startNode);
 
-        int indexStart = getIndexByMark(start_node);
+        vertexList[indexStart].wasVisited = true;   //клієнт = true
+        displayVertex(indexStart);  //вивід вершини
+        queue.insert(indexStart);   //вставка в чергу
+        int vertex1;
 
-        vertexList[indexStart].wasVisited = true; //клієнт = true
-        displayVertex(indexStart); //вивід вершини
-        theQueue.insert(indexStart); //вставка в чергу
-        int v2;
+        while (!queue.isEmpty()) {  //пока черга не пуста
+            int vertex2 = queue.remove();   //видаляємо перший елемент з черги
 
-        while(! theQueue.isEmpty() ) { // пока черга не пуста
-            int v1 = theQueue.remove();// извлечь первый элемент в очереди
+            //якщо є суміжні вершини
+            while ((vertex1 = unvisitedNeigh(vertex2)) != -1) {
 
+                vertexList[vertex1].wasVisited = true;  //позначаємо як відвідувану
+                displayVertex(vertex1); //виводимо вміст вершини
+                queue.insert(vertex1);  //вносимо вершину в чергу
 
-            while((v2 = getAdjUnvisitedVertex(v1)) != -1){
-
-                vertexList[v2].wasVisited = true;
-                displayVertex(v2);
-                theQueue.insert(v2);
-                if(lst.compare(getMark(v2),lst) != -1){
+                //якщо вершина є адресом магазину, закінчуємо обхід
+                //ціль досягнено
+                if (list.compare(getMark(vertex1), list) != -1) {
+                    //позначаємо всі вершини невідвідуваними
                     for (int i = 0; i < nVertex; i++) {
                         vertexList[i].wasVisited = false;
                     }
-                    while (!theQueue.isEmpty()){
-                         theQueue.remove();
+                    //очищаємо чергу
+                    while (!queue.isEmpty()) {
+                        queue.remove();
                     }
-                    return lst.compare(getMark(v2),lst);
+                    //повертаємо індекс кінцевої адреси
+                    return list.compare(getMark(vertex1), list);
                 }
             }
         }
+        //посначаємо всі вершини невідвідуваними
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].wasVisited = false;
         }
-        while (!theQueue.isEmpty()){
-            theQueue.remove();
+        //очищаємо чергу
+        while (!queue.isEmpty()) {
+            queue.remove();
         }
+
+        //якщо адреси магазину не знайдено
         return -1;
     }
 
-    int DFS(String start_node, LinkedList<String> lst) {
+    //пошук в глибину
+    int DFS(String startNode, LinkedList<String> list) {
+        //отримуємо індекс вершини, з якої будемо починати пошук
+        int indexStart = getIndexByMark(startNode);
 
-        int indexStart = getIndexByMark(start_node);
+        vertexList[indexStart].wasVisited = true;   //клієнт = true
+        displayVertex(indexStart);  //вивід вершини
+        stack.push(indexStart); //вставка в стек
 
-        vertexList[indexStart].wasVisited = true; //клієнт = true
-        displayVertex(indexStart); //вивід вершини
-        theStack.push(indexStart); //вставка в стек
+        while (!stack.isEmpty()) { //пока черга не пуста
+            int v = unvisitedNeigh(stack.peek());   //отримуємо суміжну вершину
 
-        while(! theStack.isEmpty() ) { // пока черга не пуста
-            int v = getAdjUnvisitedVertex(theStack.peek()); //отримуємо зміжну вершину
+            if (v == -1) {
+                stack.pop();    //видаляємо зі стека
+            } else {
+                vertexList[v].wasVisited = true;    //позначаємо як відвідувану
+                displayVertex(v);   //виводимо зміст вершини
+                stack.push(v);  //вносимо вершину в стек
 
-            if(v == -1){
-                theStack.pop();
-            }else{
-                vertexList[v].wasVisited = true;
-                displayVertex(v);
-                theStack.push(v);
-                if(lst.compare(getMark(v),lst) != -1){
+                //якщо вершина є адресом магазину, закінчуємо обхід
+                //ціль досягнено
+                if (list.compare(getMark(v), list) != -1) {
+                    //позначаємо всі вершини невідвідуваними
                     for (int i = 0; i < nVertex; i++) {
                         vertexList[i].wasVisited = false;
                     }
-                    while (!theStack.isEmpty()){
-                        theStack.pop();
+                    //очищаємо стек
+                    while (!stack.isEmpty()) {
+                        stack.pop();
                     }
-                    return lst.compare(getMark(v),lst);
+                    //повертаємо індекс кінцевої адреси
+                    return list.compare(getMark(v), list);
                 }
             }
         }
+
+        //позначаємо всі вершини невідвідуваними
         for (int i = 0; i < nVertex; i++) {
             vertexList[i].wasVisited = false;
         }
+        //очищаємо стек
+        while (!stack.isEmpty()) {
+            stack.pop();
+        }
+
+        //якщо адреси магазину не знайдено
         return -1;
     }
 
-    void rowUp(int row, int n) {
-        for(int column =0; column<n; column++) {
-            matrix[row][column] = matrix[row + 1][column];
-        }
+    public void deleting(int start, int end) {
+        matrix[start][end] = 0;
     }
-
-    void columnLeft(int column, int n) {
-        for(int row=0; row<n; row++) {
-            matrix[row][column] = matrix[row][column + 1];
-        }
-    }
-
-    void deleteVertex(String address){
-        int index = getIndexByMark(address);
-        if(index != nVertex - 1){
-            for (int i = index; i < nVertex-1; i++) {
-                vertexList[i] = vertexList[i+1];
-            }
-            for (int row = index; row < nVertex-1; row++) {
-                rowUp(row, nVertex);
-            }
-            for (int column = index; column < nVertex-1; column++) {
-                columnLeft(column, nVertex-1);
-            }
-        }
-        nVertex--;
-    }
-
 
 }
